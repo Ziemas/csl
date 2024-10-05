@@ -1,0 +1,70 @@
+name: modhsyn
+sha1: 5b1fc515bc0192b0da840d7579837e0aa8678727
+options:
+    # paths
+    basename: modhsyn.irx
+    target_path: in/modhsyn.irx
+    base_path: ..
+    
+    asm_path: asm/modhsyn
+    src_path: src/modhsyn
+    asset_path: assets/modhsyn
+    build_path: build
+    subalign: 4
+
+    extensions_path: tools/splat_ext 
+    symbol_addrs_path: config/modhsyn_symbol_addrs.txt
+    undefined_funcs_auto_path: config/modhsyn_undefined_funcs_auto.txt
+    undefined_syms_auto_path:  config/modhsyn_undefined_syms_auto.txt
+
+    named_regs_for_c_funcs: True
+    
+    # compiler 
+    compiler: GCC
+    platform: psx
+
+    string_encoding: ASCII
+    
+    section_order: [".iopmod", ".text", ".rel.text", ".rodata", ".rel.rodata", ".data", ".rel.data", ".sbss", ".bss"]
+
+segments:
+    - [0, databin, elf_header]
+    - [0x74, databin, iopmod]
+    - name: text
+      type: code
+      start: 0xb0
+      vram: 0x0
+      bss_size: 0x4
+      subsegments:
+        # .text
+        - [0xb0, asm]
+        - [0x100, asm]
+        - [0x3E0, asm]
+        - [0x870, asm]
+        - [0x11C0, asm]
+        - [0x3BD0, asm]
+        - [0x63B0, asm]
+        - [0xA480, asm]
+        - [0xA4B0, asm]
+        - [0xAFA0, asm]
+        - [0xB110, asm]
+        - [0xB410, asm]
+        - [0xBBB0, asm]
+        - [0xBD40, asm]
+        - [0xBDE0, asm]
+        - [0xBEC0, asm]
+         # .rodata
+        - [0xbf10, rodata]
+        - [0xBF30, rodata]
+        - [0xC250, rodata]
+        # .data
+        - [0xc290, data]
+        # .bss
+        - { start: 0xc550, type: bss, vram: 0xc4a0 }
+        
+    - [0xc550, databin] # .shstrtab
+    - [0xc78c, databin] # .rel.text
+    - [0xef84, databin] # .rel.rodata
+    - [0xf584, databin] # .rel.data
+    - [0xf62c, databin] # .symtab
+    - [0xf63c, databin] # .strtab
